@@ -607,7 +607,6 @@
       amountInput.addEventListener('input', function (e) { state.amount = e.target.value; });
       amountInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') handleSubmit(); });
       amountInput.focus();
-      amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length);
     }
     var noteInput = root.querySelector('[data-action="note"]');
     if (noteInput) noteInput.addEventListener('input', function (e) { state.note = e.target.value; });
