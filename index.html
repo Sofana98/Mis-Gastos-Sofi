@@ -34,7 +34,7 @@
     background: var(--bg);
     color: var(--ink);
     font-family: var(--font-body);
-    min-height: 100%;
+    min-height: 100vh;
     padding: 0 0 32px 0;
     position: relative;
     overflow: hidden;
@@ -146,6 +146,7 @@
     color: var(--ink-soft);
     margin-top: 8px;
     font-weight: 600;
+    text-transform: capitalize;
   }
 
   .type-toggle {
@@ -353,11 +354,14 @@
   .entry .del {
     background: none;
     border: none;
-    color: var(--rule);
+    color: var(--ink-soft);
     font-size: 16px;
     cursor: pointer;
-    padding: 4px 2px;
+    padding: 4px 6px;
     line-height: 1;
+  }
+  .entry .del:hover {
+    color: var(--pink-deep);
   }
 
   .empty-state {
@@ -381,6 +385,7 @@
 </head>
 <body>
 <div id="app-root"></div>
+
 <script>
 (function () {
   var GASTO_CATS = [
@@ -388,19 +393,20 @@
     { id: 'viveres', label: '🥕 Víveres', bg: '#DCF2D9' },
     { id: 'movilidad', label: '🚌 Movilidad', bg: '#D8E8FB' },
     { id: 'deporte', label: '🏋️ Deporte', bg: '#FCEFC7' },
+    { id: 'salud', label: '💊 Salud', bg: '#E2F0D9' },
     { id: 'salidas', label: '🎉 Salidas', bg: '#F6D3E8' },
     { id: 'ropa', label: '👗 Ropa', bg: '#E3D8F7' },
     { id: 'bolucompras', label: '🛍️ Bolucompras', bg: '#FDE0E0' },
     { id: 'tarjeta', label: '💳 Pagos Tarjeta de Crédito', bg: '#D9E0EF' },
     { id: 'delivery', label: '🏍️ Delivery', bg: '#FFE9CC' },
-    { id: 'comida-trabajo', label: '💼 Comida Trabajo', bg: '#E4F7F0' } 
-    { id: 'salud', label: '💊 Salud', bg: '#E2F0D9' },
+    { id: 'comida-trabajo', label: '💼 Comida Trabajo', bg: '#E4F7F0' }
   ];
+
   var INGRESO_CATS = [
     { id: 'sueldo', label: '💰 Sueldo', bg: '#D2F0DE' },
     { id: 'freelance', label: '💻 Freelance / Changas', bg: '#D7E8FB' },
     { id: 'reintegro', label: '🔄 Reintegro', bg: '#FCEAC5' },
-    { id: 'otro-ingreso', label: '✨ Otro ingreso', bg: '#F0DFF7' },
+    { id: 'otro-ingreso', label: '✨ Otro ingreso', bg: '#F0DFF7' }
   ];
 
   var state = {
@@ -436,7 +442,9 @@
 
   function findCat(type, id) {
     var list = type === 'gasto' ? GASTO_CATS : INGRESO_CATS;
-    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return list[i];
+    }
     return null;
   }
 
@@ -549,7 +557,7 @@
 
     html += '<div class="form-card">';
     html += '  <div class="amount-field"><span class="currency">$</span>';
-    html += '    <input id="amount-input" type="number" inputmode="decimal" placeholder="0" value="' + esc(state.amount) + '" data-action="amount" />';
+    html += '    <input id="amount-input" type="number" step="any" inputmode="decimal" placeholder="0" value="' + esc(state.amount) + '" data-action="amount" />';
     html += '  </div>';
 
     html += '  <div class="chip-row">';
@@ -609,7 +617,6 @@
     if (amountInput) {
       amountInput.addEventListener('input', function (e) { state.amount = e.target.value; });
       amountInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') handleSubmit(); });
-      amountInput.focus();
     }
     var noteInput = root.querySelector('[data-action="note"]');
     if (noteInput) noteInput.addEventListener('input', function (e) { state.note = e.target.value; });
